@@ -53,13 +53,18 @@ namespace WindowsFormsApp_KLAS
 			{
 				MessageBox.Show(ex.Message);
 			}
-
-			MessageBox.Show("Database connection is ready!");
 		}
 
 		private void lfLectureNotices_Load(object sender, EventArgs e)
 		{
+			// TODO: This line of code loads data into the 'kLAS_DBDataSet3.LectureNotice' table. You can move, or remove it, as needed.
+			this.lectureNoticeTableAdapter.Fill(this.kLAS_DBDataSet3.LectureNotice);
 			fillLabelData();
+			fillInCbxCouresHelper();
+
+			// display cbxSemeter[0] and cbxCourses[0] when form is loaded
+			cbxSemester.SelectedIndex =  0;
+			cbxCourses.SelectedIndex = 0;
 
 			listPanels.Add(panelHeader);
 			listPanels.Add(panelMiddle);
@@ -73,7 +78,7 @@ namespace WindowsFormsApp_KLAS
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("fLectureNotice load" + ex.Message);
+				MessageBox.Show("fLectureNotices_load" + ex.Message);
 			}
 
 			// handle `insert_identity is off` from SQL 
@@ -92,6 +97,7 @@ namespace WindowsFormsApp_KLAS
 
 		}
 
+		// insert query
 		private void btnCrudInsert_Click(object sender, EventArgs e)
 		{
 			string query = @"insert into LectureNotice(NoticeTitle, NoticeContent, CreatedDate, LecturerId, CreatedBy, CourseId) 
@@ -116,86 +122,27 @@ namespace WindowsFormsApp_KLAS
 
 					cmd.ExecuteNonQuery();
 				}
-				catch (Exception ex) {
+				catch (Exception ex) 
+				{
 					MessageBox.Show("btnCrudInsert" + ex.Message);
 				}
 
+				fillLectureNoticeDgv();
 				connection.Close();
 
 				MessageBox.Show("query executed successfully");
+				clearText();
 			}
 		}
 
 		private void btnCrudCancel_Click(object sender, EventArgs e)
 		{
-			using (SqlConnection connection = new SqlConnection(Helper.ConnectionHelper("KLAS_DB")))
-			{
-
-			}
+			clearText();
 		}
 
-		/*private void btnCrudSearch_Click(object sender, EventArgs e)
-		{
-
-			string query = @"select * from LectureNotice 
-							where Search";
-			try
-			{
-				using (SqlConnection connection = new SqlConnection(Helper.ConnectionHelper("KLAS_DB")))
-				{
-
-					// define sql command object 
-					SqlCommand cmd = new SqlCommand("LectureNoticeViewOrSearch", connection);
-
-					cmd.CommandType = CommandType.StoredProcedure;
-
-					cmd.Parameters.AddWithValue("@value", "txtSearch.Text");
-
-					connection.Open();
-
-					cmd.ExecuteNonQuery();
-
-
-
-					// set SqlDataAdapter object 
-					SqlDataAdapter dAdapter = new SqlDataAdapter(cmd);
-
-					// define dataset
-					DataSet dSet = new DataSet();
-
-					// *DataTable dTable = new DataTable();
-
-					// fill dataset with query result
-					dAdapter.Fill(dSet);
-
-					// *dAdapter.Fill(dTable);
-
-					// set dgv control = readonly 
-					// dgvLectureNotices.ReadOnly = true;
-
-					// set the dgv control's data source/data table 
-					dgvLectureNotices.DataSource = dSet.Tables[0];
-
-					// *dgvLectureNotices.DataSource = dTable;
-
-
-					connection.Close();
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show("fillLectureNoticeDgv" + ex.Message);
-			}
-
-			MessageBox.Show("query executed successfully!");
-		}*/
-
-
+		// update query
 		private void btnCrudUpdate_Click(object sender, EventArgs e)
 		{
-			// clear current text 
-			clearText(); 
-
 			string query = $@"update LectureNotice set NoticeTitle=@NoticeTitle, CreatedDate=@CreatedDate, NoticeContent=@NoticeContent
 							where NoticeId={noticeId}";
 			using (SqlConnection connection = new SqlConnection(Helper.ConnectionHelper("KLAS_DB")))
@@ -221,10 +168,12 @@ namespace WindowsFormsApp_KLAS
 
 				fillLectureNoticeDgv();
 				connection.Close();
-				MessageBox.Show("query executed successfully!");
+				// clear current text 
+				clearText();
 			}
 		}
 
+		// delete query
 		private void btnCrudDel_Click(object sender, EventArgs e)
 		{
 			string query = $@"delete LectureNotice where NoticeId={noticeId}";
@@ -244,27 +193,24 @@ namespace WindowsFormsApp_KLAS
 					MessageBox.Show("btnCrudDel" + ex.Message);
 				}
 
-				MessageBox.Show("query executed succesfully!");
 				clearText();
 				fillLectureNoticeDgv();
-
 			}
 		}
 
-
+		// clear current text in textBox
 		private void clearText()
 		{
 			txtCourseId.Text= "";
 			txtLecturer.Text = "";
 			txtTitle.Text = "";
 			txtLecturerId.Text= "";
+			txtContent.Text = "";
 		}
 
 
 		public void fillLectureNoticeDgv()
 		{
-			MessageBox.Show("Logged current user's id: " + _loggedId);
-			// string query = $@"select * from LectureNotice where CourseId=@{CourseIdList[1].ToString()}";
 			string query = $@"select * from LectureNotice where LecturerId = {_loggedId}";
 
 			using (SqlConnection connection = new SqlConnection(Helper.ConnectionHelper("KLAS_DB")))
@@ -281,8 +227,6 @@ namespace WindowsFormsApp_KLAS
 
 					// define dataset
 					DataSet dSet = new DataSet();
-
-					// *DataTable dTable = new DataTable();
 
 					// fill dataset with query result
 					dAdapter.Fill(dSet);
@@ -303,8 +247,6 @@ namespace WindowsFormsApp_KLAS
 				{
 					MessageBox.Show("fillLectureNoticeDgv" + ex.Message);
 				}
-
-				MessageBox.Show("query executed successfully!");
 			}
 		}
 
@@ -347,7 +289,6 @@ namespace WindowsFormsApp_KLAS
 
 		private void dgvLectureNotices_DoubleClick(object sender, EventArgs e)
 		{
-			MessageBox.Show("double click!");
 			updateDgvContents();
 		}
 
@@ -383,6 +324,101 @@ namespace WindowsFormsApp_KLAS
 			catch (Exception ex)
 			{
 				MessageBox.Show("fillLabelData " + ex.Message);
+			}
+		}
+
+		//  fill courseName into cbxCourses
+		private void fillInCbxCourse(int courseId)
+		{
+			string query = $@"select Course.CourseName from Course left join LecturerCourse on LecturerCourse.CourseId = Course.CourseId
+							where Course.CourseId = {courseId}";
+
+			using (SqlConnection connection = new SqlConnection(Helper.ConnectionHelper("KLAS_DB")))
+			{
+				connection.Open();
+				SqlCommand cmd = new SqlCommand(query, connection);
+				using (SqlDataReader dr = cmd.ExecuteReader())
+				{
+					if (!dr.Read())
+					{
+						MessageBox.Show("fillInCbxCourse: Source is empty!");
+					}
+					else
+					{
+						string courseName = dr["CourseName"].ToString();
+						cbxCourses.Items.Add(courseName);
+					}
+				}
+			}
+		}
+
+		// fill course name helper 
+		private void fillInCbxCouresHelper()
+		{
+			int courseId;
+
+			if (_loggedId == 2001)
+			{
+				courseId = 3001;
+				fillInCbxCourse(courseId);
+			}
+			else if (_loggedId == 2002)
+			{
+				courseId = 3002;
+				fillInCbxCourse(courseId);
+			}
+			else if (_loggedId == 2003)
+			{
+				courseId = 3003;
+				fillInCbxCourse(courseId);
+			}
+			else if (_loggedId == 2004)
+			{
+				courseId = 3004;
+				fillInCbxCourse(courseId);
+			}
+			else if (_loggedId == 2005)
+			{
+				courseId = 3005;
+				fillInCbxCourse(courseId);
+			}
+		}
+
+
+		private void cbxMenu_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			switch (cbxMenu.SelectedItem)
+			{
+				case "공지사항":
+					this.Hide();
+					using (lfLectureNotices lfLectureNotice = new lfLectureNotices())
+					{
+						lfLectureNotice.ShowDialog();
+						lfLectureNotice.BringToFront();
+						lfLectureNotice.Focus();
+					}
+					break;
+				case "강의자료실":
+					this.Hide();
+					using (lfLectureNotes lfLectureNote = new lfLectureNotes())
+					{
+						lfLectureNote.ShowDialog();
+						lfLectureNote.BringToFront();
+						lfLectureNote.Focus();
+					}
+					break;
+				case "강의계획서":
+					this.Hide();
+					using (lfLectureSyllabus lfLectureSyllabus = new lfLectureSyllabus())
+					{
+						lfLectureSyllabus.ShowDialog();
+						lfLectureSyllabus.BringToFront();
+						lfLectureSyllabus.Focus();
+					}
+					break;
+
+				default:
+					break;
 			}
 		}
 	}

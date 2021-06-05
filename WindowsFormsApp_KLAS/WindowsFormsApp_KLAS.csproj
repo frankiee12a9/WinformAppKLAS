@@ -59,6 +59,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>KLAS_DBDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="KLAS_DBDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KLAS_DBDataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="KLAS_DBDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KLAS_DBDataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="KLAS_DBDataSet3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KLAS_DBDataSet3.xsd</DependentUpon>
+    </Compile>
     <Compile Include="lfLectureNotes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +204,39 @@
     </None>
     <None Include="KLAS_DBDataSet.xss">
       <DependentUpon>KLAS_DBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="KLAS_DBDataSet1.xsc">
+      <DependentUpon>KLAS_DBDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="KLAS_DBDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>KLAS_DBDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="KLAS_DBDataSet1.xss">
+      <DependentUpon>KLAS_DBDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="KLAS_DBDataSet2.xsc">
+      <DependentUpon>KLAS_DBDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="KLAS_DBDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>KLAS_DBDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="KLAS_DBDataSet2.xss">
+      <DependentUpon>KLAS_DBDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="KLAS_DBDataSet3.xsc">
+      <DependentUpon>KLAS_DBDataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="KLAS_DBDataSet3.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>KLAS_DBDataSet3.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="KLAS_DBDataSet3.xss">
+      <DependentUpon>KLAS_DBDataSet3.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

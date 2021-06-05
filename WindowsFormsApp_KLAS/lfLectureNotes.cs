@@ -41,8 +41,14 @@ namespace WindowsFormsApp_KLAS
 
 		private void fLectureNotes_Load(object sender, EventArgs e)
 		{
+			// TODO: This line of code loads data into the 'kLAS_DBDataSet2.LectureNote' table. You can move, or remove it, as needed.
+			this.lectureNoteTableAdapter.Fill(this.kLAS_DBDataSet2.LectureNote);
 			fillLabelData();
+			fillInCbxCouresHelper();
+			cbxSemester.SelectedIndex = 0;
+			cbxCourses.SelectedIndex = 0;
 
+			// add total panels in current form
 			listPanels.Add(panelHeader);
 			listPanels.Add(panelMiddle1);
 			listPanels.Add(panelMiddle2);
@@ -77,7 +83,7 @@ namespace WindowsFormsApp_KLAS
 			panelCrud.Focus();
 			try
 			{
-				using (IDbConnection connection = new SqlConnection(Helper.ConnectionHelper("KLAS_DB")))
+				using (SqlConnection connection = new SqlConnection(Helper.ConnectionHelper("KLAS_DB")))
 				{
 					connection.Open();
 				}
@@ -86,14 +92,68 @@ namespace WindowsFormsApp_KLAS
 			{
 				MessageBox.Show(ex.Message);
 			}
-
-			MessageBox.Show("Database connection is ready!");
 		}
+
+		// fill courseName into cbxCourses
+		private void fillInCbxCourse(int courseId)
+		{
+			string query = $@"select Course.CourseName from Course left join LecturerCourse on LecturerCourse.CourseId = Course.CourseId
+							where Course.CourseId = {courseId}";
+
+			using (SqlConnection connection = new SqlConnection(Helper.ConnectionHelper("KLAS_DB")))
+			{
+				connection.Open();
+				SqlCommand cmd = new SqlCommand(query, connection);
+				using (SqlDataReader dr = cmd.ExecuteReader())
+				{
+					if (!dr.Read())
+					{
+						MessageBox.Show("fillInCbxCourse: Source is empty!");
+					}
+					else
+					{
+						string courseName = dr["CourseName"].ToString();
+						cbxCourses.Items.Add(courseName); 
+					}
+				}
+			}
+		}
+
+		// fill course name helper 
+		private void fillInCbxCouresHelper()
+		{
+			int courseId;
+
+			if (_loggedId == 2001)
+			{
+				courseId = 3001;
+				fillInCbxCourse(courseId);
+			}
+			else if (_loggedId == 2002)
+			{
+				courseId = 3002;
+				fillInCbxCourse(courseId);
+			}
+			else if (_loggedId == 2003)
+			{
+				courseId = 3003;
+				fillInCbxCourse(courseId);
+			}
+			else if (_loggedId == 2004)
+			{
+				courseId = 3004;
+				fillInCbxCourse(courseId);
+			}
+			else if (_loggedId == 2005)
+			{
+				courseId = 3005;
+				fillInCbxCourse(courseId);
+			}
+		}
+
 
 		private void fillLectureNotesDgv()
 		{
-			MessageBox.Show("Logged current user's id: " + _loggedId);
-
 			string query = $@"select * from LectureNote where LecturerId = {_loggedId}";
 
 			using (SqlConnection connection = new SqlConnection(Helper.ConnectionHelper("KLAS_DB")))
@@ -132,8 +192,6 @@ namespace WindowsFormsApp_KLAS
 				{
 					MessageBox.Show("fillLectureNoteDgv: " + ex.Message);
 				}
-
-				MessageBox.Show("query executed successfully!");
 			}
 		}
 
@@ -163,7 +221,6 @@ namespace WindowsFormsApp_KLAS
 					MessageBox.Show("btnCrudUpdate: " + ex.Message);	
 				}
 
-				MessageBox.Show("query executed succesfully!");
 				clearText();
 				fillLectureNotesDgv();
 				connection.Close();
@@ -190,7 +247,6 @@ namespace WindowsFormsApp_KLAS
 					MessageBox.Show("btnCrudDel" + ex.Message);
 				}
 
-				MessageBox.Show("query executed succesfully!");
 				clearText();
 				fillLectureNotesDgv();
 			}
@@ -225,17 +281,14 @@ namespace WindowsFormsApp_KLAS
 				}
 
 				connection.Close();
-
-				clearText();
 				fillLectureNotesDgv();
-
-				MessageBox.Show("query executed successfully");
+				clearText();
 			}
 		}
 
 		private void btnCrudCancel_Click(object sender, EventArgs e)
 		{
-
+			clearText();
 		}
 
 		private void clearText()
@@ -245,6 +298,7 @@ namespace WindowsFormsApp_KLAS
 			txtTitle.Text = "";
 			txtContent.Text = "";
 			txtLecturerId.Text= "";
+			txtContent.Text = "";
 		}
 
 		private void btnLogout_Click(object sender, EventArgs e)
@@ -280,7 +334,6 @@ namespace WindowsFormsApp_KLAS
 
 		private void dgvLectureNotes_DoubleClick(object sender, EventArgs e)
 		{
-			MessageBox.Show("double click!");
 			updateDgvContents();
 		}
 
@@ -329,5 +382,41 @@ namespace WindowsFormsApp_KLAS
 			}
 		}
 
+		private void cbxMenu_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			switch (cbxMenu.SelectedItem)
+			{
+				case "공지사항":
+					this.Hide();
+					using (lfLectureNotices lfLectureNotice = new lfLectureNotices())
+					{
+						lfLectureNotice.ShowDialog();
+						lfLectureNotice.BringToFront();
+						lfLectureNotice.Focus();
+					}
+					break;
+				case "강의자료실":
+					this.Hide();
+					using (lfLectureNotes lfLectureNote = new lfLectureNotes())
+					{
+						lfLectureNote.ShowDialog();
+						lfLectureNote.BringToFront();
+						lfLectureNote.Focus();
+					}
+					break;
+				case "강의계획서":
+					this.Hide();
+					using (lfLectureSyllabus lfLectureSyllabus = new lfLectureSyllabus())
+					{
+						lfLectureSyllabus.ShowDialog();
+						lfLectureSyllabus.BringToFront();
+						lfLectureSyllabus.Focus();
+					}
+					break;
+
+				default:
+					break;
+			}
+		}
 	}
 }

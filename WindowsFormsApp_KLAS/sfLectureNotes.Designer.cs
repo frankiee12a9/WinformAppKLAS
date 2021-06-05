@@ -29,6 +29,7 @@ namespace WindowsFormsApp_KLAS
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.panelHeader = new System.Windows.Forms.Panel();
 			this.cbxMenu = new System.Windows.Forms.ComboBox();
@@ -54,6 +55,15 @@ namespace WindowsFormsApp_KLAS
 			this.cbxSelectCourse = new System.Windows.Forms.ComboBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.panelFooter = new WindowsFormsApp_KLAS.Footer();
+			this.kLAS_DBDataSet1 = new WindowsFormsApp_KLAS.KLAS_DBDataSet1();
+			this.lectureNoteBindingSource = new System.Windows.Forms.BindingSource(this.components);
+			this.lectureNoteTableAdapter = new WindowsFormsApp_KLAS.KLAS_DBDataSet1TableAdapters.LectureNoteTableAdapter();
+			this.noteIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.noteTitleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.noteContentDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.createdDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.createdByDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.noteViewsNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.panel1.SuspendLayout();
 			this.panelHeader.SuspendLayout();
 			this.panel4.SuspendLayout();
@@ -63,6 +73,8 @@ namespace WindowsFormsApp_KLAS
 			this.panelMiddle2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvLectureNotes)).BeginInit();
 			this.panelMiddle1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.kLAS_DBDataSet1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.lectureNoteBindingSource)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -88,9 +100,9 @@ namespace WindowsFormsApp_KLAS
 			// 
 			this.cbxMenu.FormattingEnabled = true;
 			this.cbxMenu.Items.AddRange(new object[] {
-            "Lecture Notes",
-            "Lecture Notices",
-            "Lecture Syllabus"});
+            "공지사항",
+            "강의자료실",
+            "강의계획서"});
 			this.cbxMenu.Location = new System.Drawing.Point(315, 29);
 			this.cbxMenu.Name = "cbxMenu";
 			this.cbxMenu.Size = new System.Drawing.Size(121, 20);
@@ -222,7 +234,16 @@ namespace WindowsFormsApp_KLAS
 			// 
 			// dgvLectureNotes
 			// 
+			this.dgvLectureNotes.AutoGenerateColumns = false;
 			this.dgvLectureNotes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvLectureNotes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.noteIdDataGridViewTextBoxColumn,
+            this.noteTitleDataGridViewTextBoxColumn,
+            this.noteContentDataGridViewTextBoxColumn,
+            this.createdDateDataGridViewTextBoxColumn,
+            this.createdByDataGridViewTextBoxColumn,
+            this.noteViewsNumberDataGridViewTextBoxColumn});
+			this.dgvLectureNotes.DataSource = this.lectureNoteBindingSource;
 			this.dgvLectureNotes.Location = new System.Drawing.Point(75, 76);
 			this.dgvLectureNotes.Name = "dgvLectureNotes";
 			this.dgvLectureNotes.RowTemplate.Height = 23;
@@ -235,6 +256,7 @@ namespace WindowsFormsApp_KLAS
 			this.txtSearch.Name = "txtSearch";
 			this.txtSearch.Size = new System.Drawing.Size(205, 21);
 			this.txtSearch.TabIndex = 3;
+			this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
 			// 
 			// btnSearch
 			// 
@@ -248,6 +270,11 @@ namespace WindowsFormsApp_KLAS
 			// cbxSearchBased
 			// 
 			this.cbxSearchBased.FormattingEnabled = true;
+			this.cbxSearchBased.Items.AddRange(new object[] {
+            "천제",
+            "내용",
+            "제목",
+            "작성자"});
 			this.cbxSearchBased.Location = new System.Drawing.Point(281, 36);
 			this.cbxSearchBased.Name = "cbxSearchBased";
 			this.cbxSearchBased.Size = new System.Drawing.Size(129, 20);
@@ -284,15 +311,22 @@ namespace WindowsFormsApp_KLAS
 			// cbxSelectCourse
 			// 
 			this.cbxSelectCourse.FormattingEnabled = true;
-			this.cbxSelectCourse.Location = new System.Drawing.Point(727, 21);
+			this.cbxSelectCourse.Items.AddRange(new object[] {
+            "알고리즘",
+            "자료구조",
+            "이산구조",
+            "데이터베이스",
+            "기계학습"});
+			this.cbxSelectCourse.Location = new System.Drawing.Point(709, 21);
 			this.cbxSelectCourse.Name = "cbxSelectCourse";
-			this.cbxSelectCourse.Size = new System.Drawing.Size(172, 20);
+			this.cbxSelectCourse.Size = new System.Drawing.Size(190, 20);
 			this.cbxSelectCourse.TabIndex = 1;
+			this.cbxSelectCourse.SelectedIndexChanged += new System.EventHandler(this.cbxSelectCourse_SelectedIndexChanged);
 			// 
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(647, 24);
+			this.label4.Location = new System.Drawing.Point(649, 24);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(41, 12);
 			this.label4.TabIndex = 0;
@@ -305,6 +339,62 @@ namespace WindowsFormsApp_KLAS
 			this.panelFooter.Name = "panelFooter";
 			this.panelFooter.Size = new System.Drawing.Size(980, 78);
 			this.panelFooter.TabIndex = 1;
+			// 
+			// kLAS_DBDataSet1
+			// 
+			this.kLAS_DBDataSet1.DataSetName = "KLAS_DBDataSet1";
+			this.kLAS_DBDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+			// 
+			// lectureNoteBindingSource
+			// 
+			this.lectureNoteBindingSource.DataMember = "LectureNote";
+			this.lectureNoteBindingSource.DataSource = this.kLAS_DBDataSet1;
+			// 
+			// lectureNoteTableAdapter
+			// 
+			this.lectureNoteTableAdapter.ClearBeforeFill = true;
+			// 
+			// noteIdDataGridViewTextBoxColumn
+			// 
+			this.noteIdDataGridViewTextBoxColumn.DataPropertyName = "NoteId";
+			this.noteIdDataGridViewTextBoxColumn.HeaderText = "번호";
+			this.noteIdDataGridViewTextBoxColumn.Name = "noteIdDataGridViewTextBoxColumn";
+			this.noteIdDataGridViewTextBoxColumn.Width = 90;
+			// 
+			// noteTitleDataGridViewTextBoxColumn
+			// 
+			this.noteTitleDataGridViewTextBoxColumn.DataPropertyName = "NoteTitle";
+			this.noteTitleDataGridViewTextBoxColumn.HeaderText = "제목";
+			this.noteTitleDataGridViewTextBoxColumn.Name = "noteTitleDataGridViewTextBoxColumn";
+			this.noteTitleDataGridViewTextBoxColumn.Width = 180;
+			// 
+			// noteContentDataGridViewTextBoxColumn
+			// 
+			this.noteContentDataGridViewTextBoxColumn.DataPropertyName = "NoteContent";
+			this.noteContentDataGridViewTextBoxColumn.HeaderText = "내용";
+			this.noteContentDataGridViewTextBoxColumn.Name = "noteContentDataGridViewTextBoxColumn";
+			this.noteContentDataGridViewTextBoxColumn.Width = 180;
+			// 
+			// createdDateDataGridViewTextBoxColumn
+			// 
+			this.createdDateDataGridViewTextBoxColumn.DataPropertyName = "CreatedDate";
+			this.createdDateDataGridViewTextBoxColumn.HeaderText = "작성일";
+			this.createdDateDataGridViewTextBoxColumn.Name = "createdDateDataGridViewTextBoxColumn";
+			this.createdDateDataGridViewTextBoxColumn.Width = 120;
+			// 
+			// createdByDataGridViewTextBoxColumn
+			// 
+			this.createdByDataGridViewTextBoxColumn.DataPropertyName = "CreatedBy";
+			this.createdByDataGridViewTextBoxColumn.HeaderText = "작성자";
+			this.createdByDataGridViewTextBoxColumn.Name = "createdByDataGridViewTextBoxColumn";
+			this.createdByDataGridViewTextBoxColumn.Width = 120;
+			// 
+			// noteViewsNumberDataGridViewTextBoxColumn
+			// 
+			this.noteViewsNumberDataGridViewTextBoxColumn.DataPropertyName = "NoteViewsNumber";
+			this.noteViewsNumberDataGridViewTextBoxColumn.HeaderText = "조회수";
+			this.noteViewsNumberDataGridViewTextBoxColumn.Name = "noteViewsNumberDataGridViewTextBoxColumn";
+			this.noteViewsNumberDataGridViewTextBoxColumn.Width = 90;
 			// 
 			// sfLectureNotes
 			// 
@@ -331,6 +421,8 @@ namespace WindowsFormsApp_KLAS
 			((System.ComponentModel.ISupportInitialize)(this.dgvLectureNotes)).EndInit();
 			this.panelMiddle1.ResumeLayout(false);
 			this.panelMiddle1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.kLAS_DBDataSet1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.lectureNoteBindingSource)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -362,5 +454,14 @@ namespace WindowsFormsApp_KLAS
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Label lblCourseTime_Place;
 		private System.Windows.Forms.Label lblCourseName_Id_lecturer;
+		private KLAS_DBDataSet1 kLAS_DBDataSet1;
+		private System.Windows.Forms.BindingSource lectureNoteBindingSource;
+		private KLAS_DBDataSet1TableAdapters.LectureNoteTableAdapter lectureNoteTableAdapter;
+		private System.Windows.Forms.DataGridViewTextBoxColumn noteIdDataGridViewTextBoxColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn noteTitleDataGridViewTextBoxColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn noteContentDataGridViewTextBoxColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn createdDateDataGridViewTextBoxColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn createdByDataGridViewTextBoxColumn;
+		private System.Windows.Forms.DataGridViewTextBoxColumn noteViewsNumberDataGridViewTextBoxColumn;
 	}
 }

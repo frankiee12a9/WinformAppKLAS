@@ -76,18 +76,11 @@ namespace WindowsFormsApp_KLAS
 			};
 		}
 
-		// search text button
-		private void btnTextSearch_Click(object sender, EventArgs e)
-		{
-			cbxSearchBased_SelectedIndexChanged(this, null);
-		}
-
-
 		private void cbxMenu_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			switch (cbxMenu.SelectedItem)
 			{
-				case "Lecture Notices":
+				case "공지사항":
 					this.Hide();
 					using (sfLectureNotices fLectureNotice = new sfLectureNotices())
 					{
@@ -96,7 +89,7 @@ namespace WindowsFormsApp_KLAS
 						fLectureNotice.Focus();
 					}
 					break;
-				case "Lecture Notes":
+				case "강의자료실":
 					this.Hide();
 					using (sfLectureNotes fLectureNote = new sfLectureNotes())
 					{
@@ -105,7 +98,7 @@ namespace WindowsFormsApp_KLAS
 						fLectureNote.Focus();
 					}
 					break;
-				case "Lecture Syllabus":
+				case "강의계획서":
 					this.Hide();
 					using (sfLectureSyllabus fLectureSyllabus = new sfLectureSyllabus())
 					{
@@ -214,44 +207,7 @@ namespace WindowsFormsApp_KLAS
 			}
 		}
 
-
-		private void cbxSearchBased_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			/*int lecturerId;
-			string field, fieldValue;
-
-			switch(cbxSearchBased.SelectedItem)
-			{
-				*//*case "천제":
-					lecturerId = 
-					searchAll();
-					break;*//*
-
-				case "제목":
-				{
-					MessageBox.Show("제목!!");
-					lecturerId = 2001;
-					field = "NoticeTitle";
-					fieldValue = $"{txtSearch.Text.Trim()}";
-					searchBasedField(lecturerId, field, fieldValue);
-					break;
-				}
-
-				case "내용":
-				{
-					break;
-				}
-
-				case "작성자":
-				{
-					break;
-				}			
-				default:
-					break;
-			}*/
-		}
-
-		private void txtSearch_KeyDown(object sender, KeyEventArgs e)
+		/*private void txtSearch_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
 			{
@@ -271,7 +227,7 @@ namespace WindowsFormsApp_KLAS
 					}
 				}
 			}
-		}
+		}*/
 
 		private void txtSearch_TextChanged(object sender, EventArgs e)
 		{
@@ -479,9 +435,9 @@ namespace WindowsFormsApp_KLAS
 		}
 
 
-		public void fillLectureNoticeDgv(int id)
+		public void fillLectureNoticeDgv(int lecturerId)
 		{
-			string query = $@"select * from LectureNotice where LecturerId = {id}";
+			string query = $@"select * from LectureNotice where LecturerId = {lecturerId}";
 
 			using (SqlConnection connection = new SqlConnection(Helper.ConnectionHelper("KLAS_DB")))
 			{

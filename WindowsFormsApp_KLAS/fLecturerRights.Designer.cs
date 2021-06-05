@@ -44,22 +44,22 @@ namespace WindowsFormsApp_KLAS
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.panel3 = new System.Windows.Forms.Panel();
-			this.panelFooter = new WindowsFormsApp_KLAS.Footer();
 			this.panel4 = new System.Windows.Forms.Panel();
-			this.comboBox4 = new System.Windows.Forms.ComboBox();
+			this.cbxMenu = new System.Windows.Forms.ComboBox();
 			this.panel5 = new System.Windows.Forms.Panel();
 			this.btnLogout = new System.Windows.Forms.Button();
 			this.lblNameAndId = new System.Windows.Forms.Label();
 			this.panel6 = new System.Windows.Forms.Panel();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
+			this.panel3 = new System.Windows.Forms.Panel();
+			this.panelFooter = new WindowsFormsApp_KLAS.Footer();
 			this.panelMiddle.SuspendLayout();
 			this.panel1.SuspendLayout();
-			this.panel3.SuspendLayout();
 			this.panel4.SuspendLayout();
 			this.panel5.SuspendLayout();
 			this.panel6.SuspendLayout();
+			this.panel3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// panelMiddle
@@ -220,26 +220,10 @@ namespace WindowsFormsApp_KLAS
 			this.panel1.Size = new System.Drawing.Size(1002, 80);
 			this.panel1.TabIndex = 4;
 			// 
-			// panel3
-			// 
-			this.panel3.Controls.Add(this.panelFooter);
-			this.panel3.Location = new System.Drawing.Point(3, 719);
-			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(1002, 80);
-			this.panel3.TabIndex = 4;
-			// 
-			// panelFooter
-			// 
-			this.panelFooter.BackColor = System.Drawing.Color.IndianRed;
-			this.panelFooter.Location = new System.Drawing.Point(0, -1);
-			this.panelFooter.Name = "panelFooter";
-			this.panelFooter.Size = new System.Drawing.Size(1002, 82);
-			this.panelFooter.TabIndex = 1;
-			// 
 			// panel4
 			// 
 			this.panel4.BackColor = System.Drawing.Color.IndianRed;
-			this.panel4.Controls.Add(this.comboBox4);
+			this.panel4.Controls.Add(this.cbxMenu);
 			this.panel4.Controls.Add(this.panel5);
 			this.panel4.Controls.Add(this.panel6);
 			this.panel4.Location = new System.Drawing.Point(2, -4);
@@ -247,17 +231,18 @@ namespace WindowsFormsApp_KLAS
 			this.panel4.Size = new System.Drawing.Size(999, 88);
 			this.panel4.TabIndex = 3;
 			// 
-			// comboBox4
+			// cbxMenu
 			// 
-			this.comboBox4.FormattingEnabled = true;
-			this.comboBox4.Items.AddRange(new object[] {
-            "Lecture Notes",
-            "Lecture Notices",
-            "Lecture Syllabus"});
-			this.comboBox4.Location = new System.Drawing.Point(315, 31);
-			this.comboBox4.Name = "comboBox4";
-			this.comboBox4.Size = new System.Drawing.Size(121, 20);
-			this.comboBox4.TabIndex = 4;
+			this.cbxMenu.FormattingEnabled = true;
+			this.cbxMenu.Items.AddRange(new object[] {
+            "공지사항",
+            "강의자료실",
+            "강의계획서"});
+			this.cbxMenu.Location = new System.Drawing.Point(315, 31);
+			this.cbxMenu.Name = "cbxMenu";
+			this.cbxMenu.Size = new System.Drawing.Size(121, 20);
+			this.cbxMenu.TabIndex = 4;
+			this.cbxMenu.SelectedIndexChanged += new System.EventHandler(this.cbxMenu_SelectedIndexChanged);
 			// 
 			// panel5
 			// 
@@ -319,6 +304,22 @@ namespace WindowsFormsApp_KLAS
 			this.label11.TabIndex = 0;
 			this.label11.Text = "KWANGWOON\r\n";
 			// 
+			// panel3
+			// 
+			this.panel3.Controls.Add(this.panelFooter);
+			this.panel3.Location = new System.Drawing.Point(3, 719);
+			this.panel3.Name = "panel3";
+			this.panel3.Size = new System.Drawing.Size(1002, 80);
+			this.panel3.TabIndex = 4;
+			// 
+			// panelFooter
+			// 
+			this.panelFooter.BackColor = System.Drawing.Color.IndianRed;
+			this.panelFooter.Location = new System.Drawing.Point(0, -1);
+			this.panelFooter.Name = "panelFooter";
+			this.panelFooter.Size = new System.Drawing.Size(1002, 82);
+			this.panelFooter.TabIndex = 1;
+			// 
 			// fLecturerRights
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -333,12 +334,12 @@ namespace WindowsFormsApp_KLAS
 			this.panelMiddle.ResumeLayout(false);
 			this.panelMiddle.PerformLayout();
 			this.panel1.ResumeLayout(false);
-			this.panel3.ResumeLayout(false);
 			this.panel4.ResumeLayout(false);
 			this.panel5.ResumeLayout(false);
 			this.panel5.PerformLayout();
 			this.panel6.ResumeLayout(false);
 			this.panel6.PerformLayout();
+			this.panel3.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -362,7 +363,7 @@ namespace WindowsFormsApp_KLAS
 		private System.Windows.Forms.Panel panel3;
 		private Footer panelFooter;
 		private System.Windows.Forms.Panel panel4;
-		private System.Windows.Forms.ComboBox comboBox4;
+		private System.Windows.Forms.ComboBox cbxMenu;
 		private System.Windows.Forms.Panel panel5;
 		private System.Windows.Forms.Button btnLogout;
 		private System.Windows.Forms.Label lblNameAndId;
